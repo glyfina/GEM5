@@ -51,7 +51,7 @@ void corrBP:: reset() {
 
  DPRINTF(Fetch, "reset\n");
  sprintf (msg , " reset called ");
- // fl.log(msg);
+ fl.log(msg);
 }
 
 
@@ -103,7 +103,7 @@ taken= (count >> 1);   // get the msb of the sat count
 
 
 sprintf (msg , " addr= 0x%lu", branch_addr);
-// fl.log(msg);
+fl.log(msg);
 
 
 DPRINTF(Fetch, "branch lower order=%i\n", branch_lower_order);
@@ -164,7 +164,7 @@ corrBP:: update(Addr branch_addr, bool taken, void *bp_history, bool squashed ){
 
 
 sprintf (msg , " addr= 0x%lu", branch_addr);
-// fl.log(msg);
+fl.log(msg);
 
 DPRINTF(Fetch, "update complete\n");
 
@@ -185,7 +185,7 @@ corrBP::btbUpdate(Addr branch_addr, void * &bp_history)
 DPRINTF(Fetch, "btbUpdate\n");
 
 sprintf (msg , " addr= 0x%lu", branch_addr);
-// fl.log(msg);
+fl.log(msg);
 
 
 }
@@ -201,7 +201,7 @@ corrBP::uncondBranch(void *&bp_history,Addr branch_addr)
 
 
   sprintf (msg , " uncond branch called ");
-   // fl.log(msg);
+  fl.log(msg);
 
 }
 
@@ -211,22 +211,16 @@ void
 corrBP::squash(void *bp_history){
 
 DPRINTF(Fetch, "squash\n");
-  //  updateGlobalHistNotTaken();
-
+  
   assert(bp_history == NULL);
 
   sprintf(msg,"squash called ");
-  // fl.log(msg);
+  fl.log(msg);
 
 }
 
 corrBP:: ~ corrBP (void){
 
-
-//sprintf (msg , " update_count=%d ",update_count);
-
- //fl.log(msg);
-//fl.closelog();
 
 
 }
