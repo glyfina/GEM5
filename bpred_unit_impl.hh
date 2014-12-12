@@ -82,19 +82,6 @@ BPredUnit::BPredUnit(const Params *params) : SimObject(params),BTB(params->BTBEn
     fl1.openlog();
 
 
-
-
-
-
-   // report.resize(1);
-
-  // sprintf (msg1, "Bpred constructor called \n");
-  
-   //fl1.openlog ();
-  // fl1.log(msg1);
-   
-;
-
 }
 
 void
@@ -159,8 +146,8 @@ BPredUnit::regStats()
     correctpredictionPercent = ((condPredicted- condIncorrect)/(condPredicted)) * 100;
      
   
-  // sprintf (msg1, "reg stats called \n");
-  //fl1.log(msg1);
+   sprintf (msg1, "reg stats called \n");
+  fl1.log(msg1);
 
 }
 
@@ -521,8 +508,8 @@ BPredUnit::squash(const InstSeqNum &squashed_sn, ThreadID tid)
                 tid, predHist[tid].size());
     }
 
-   //   sprintf (msg1, "squash2 called\n");
-   // fl1.log(msg1);
+     sprintf (msg1, "squash2 called\n");
+      fl1.log(msg1);
 }
 
 void
@@ -653,19 +640,13 @@ BPredUnit::dump()
         }
     }
 
-   //  sprintf (msg1, "dump called\n");
-   // fl1.log(msg1);
+     sprintf (msg1, "dump called\n");
+    fl1.log(msg1);
      
 }
 
 
 BPredUnit::~BPredUnit(void){
-
-//report[0].call_print();
-///sprintf (msg1);
-//fl1.log(msg1);
-
-
 
 sprintf (msg1, "file closed\n");
 fl1.log(msg1);
