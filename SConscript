@@ -39,7 +39,7 @@ if 'InOrderCPU' in env['CPU_MODELS'] or 'O3CPU' in env['CPU_MODELS']:
     Source('btb.cc')
     Source('ras.cc')
     Source('tournament.cc')
-    Source('my_predictor.cc')
+    Source('corr_pred.cc')
     Source('gselect.cc')
     Source('corr.cc')
     DebugFlag('FreeList')
