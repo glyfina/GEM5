@@ -14,34 +14,14 @@ corr_predBP::corr_predBP(const Params *params ):BPredUnit(params),PredSize(param
 {
 sprintf (msg, " constructor called ");
   
-   // fl.openlog ();
-   // // fl.log(msg);
+   fl.openlog ();
+   fl.log(msg);
     
 
  localPredictorSets= (PredSize)/(PredCtrs);
 
    
-// Setup the array of counters for the local predictor.
-   // localCtrs.resize(localPredictorSets);
-/*
-// set the PredCtrs
-   for (int i = 0; i < localPredictorSets; ++i)
-     {   localCtrs[i].setBits(PredCtrs);
-         
-     }
-//Setup the history table for the local table
-    //localHistoryTable_sub.resize(localPredictorSets);
-    localHistoryTable.resize(4);
 
-
-    for (int i = 0; i < localPredictorSets; ++i){
-        localCtrs[i] = 0;
-         }
-
-
-     for(int i=0; i<4 ; i++){
-     localHistoryTable.push_back(localCtrs);}
-  */
      for(int i=0;i<32 ;i++){
          for (int j=0; j<16 ;j++){
         value[i][j]=0;
@@ -61,15 +41,6 @@ sprintf (msg, " constructor called ");
 
 void corr_predBP:: reset() {
 
- /*for(int i=0;i<4;i++){
-
-   for(int j=0;j<16;j++){
-
-   localHistoryTable[i][j].reset();
-   
-   }
-}*/
-
     for(int i=0;i<32;i++){
          for (int j=0; j<16 ;j++){
         value[i][j]=0;
@@ -79,7 +50,7 @@ void corr_predBP:: reset() {
 
  DPRINTF(Fetch, "reset\n");
  sprintf (msg , " reset called ");
- // fl.log(msg);
+ fl.log(msg);
 }
 
 
@@ -117,8 +88,6 @@ bool taken=0;
 branch_lower_order= branch_addr & 15;
 
 
-//count=localHistoryTable[globalHistory][branch_lower_order].read();
-
 count=value[globalHistory][branch_lower_order];
 
 taken= (count >> (PredCtrs - 1));   // get the msb of the sat count
@@ -152,7 +121,7 @@ corr_predBP:: update(Addr branch_addr, bool taken, void *bp_history, bool squash
 // update local history
  if (taken) {
         DPRINTF(Fetch, "Branch updated as taken.\n");
-       // localHistoryTable[globalHistory][branch_lower_order].increment();
+       
        
         count=value[globalHistory][branch_lower_order];
         if ((count>=0) & (count<3))
@@ -169,7 +138,7 @@ corr_predBP:: update(Addr branch_addr, bool taken, void *bp_history, bool squash
 
     } else {
         DPRINTF(Fetch, "Branch updated as not taken.\n");
-        //localHistoryTable[globalHistory][branch_lower_order].decrement();
+        
          
        count=value[globalHistory][branch_lower_order];
        if ((count>0) && (count<=3)) 
@@ -183,20 +152,8 @@ corr_predBP:: update(Addr branch_addr, bool taken, void *bp_history, bool squash
 
 
 
- // update global history
-/* if(taken){
-        updateGlobalHistTaken();
-        DPRINTF(Fetch, "global update.\n");     
-   }
-
-  else{
-       updateGlobalHistNotTaken();
-       DPRINTF(Fetch, "global update.\n");
-}
- */
-
 sprintf (msg , " addr= 0x%lu", branch_addr);
-// fl.log(msg);
+ fl.log(msg);
 
 DPRINTF(Fetch, "update complete\n");
 
@@ -209,15 +166,12 @@ corr_predBP::btbUpdate(Addr branch_addr, void * &bp_history)
 {
 // Place holder for a function that is called to update predictor history when
 // a BTB entry is invalid or not found.
-        //  updateGlobalHistNotTaken();
-
-//Update Global History to Not Taken (clear LSB)
-    
+       
 
 DPRINTF(Fetch, "btbUpdate\n");
 
 sprintf (msg , " addr= 0x%lu", branch_addr);
-// fl.log(msg);
+ fl.log(msg);
 
 
 }
@@ -233,7 +187,7 @@ corr_predBP::uncondBranch(void *&bp_history,Addr branch_addr)
 
 
   sprintf (msg , " uncond branch called ");
-   // fl.log(msg);
+  fl.log(msg);
 
 }
 
@@ -243,32 +197,21 @@ void
 corr_predBP::squash(void *bp_history){
 
 DPRINTF(Fetch, "squash\n");
-  //  updateGlobalHistNotTaken();
+  
 
   assert(bp_history == NULL);
 
   sprintf(msg,"squash called ");
-  // fl.log(msg);
+   fl.log(msg);
 
 }
 
 corr_predBP:: ~ corr_predBP (void){
 
 
-//sprintf (msg , " update_count=%d ",update_count);
-
- //fl.log(msg);
-//fl.closelog();
-
 
 }
 
-/*
-#ifdef DEBUG
-int
-corr_predBP::BPHistory::newCount = 0;
-#endif
-*/
 
 
 
