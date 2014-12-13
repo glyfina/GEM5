@@ -46,12 +46,7 @@ class BranchPredictor(SimObject):
     choicePredictorSize = Param.Unsigned(8192, "Size of choice predictor")
     choiceCtrBits = Param.Unsigned(2, "Bits of choice counters")
     
-    # added
-    localHistoryBits_corr=Param.Unsigned(4 , "no of local history bits")
-    localHistoryTableSize_corr=Param.Unsigned(64 , "Size of local predictor for correlator_branch") # 128
-    global_corr=Param.Unsigned (2,"Size of global predictor for correlator_branch")
-    ctrbits_corr=Param.Unsigned (2,"Size of counter bits of local predictor")
-    
+   
    # added
     
     PredSize=Param.Unsigned(32, "Size of local predictor")
@@ -59,10 +54,7 @@ class BranchPredictor(SimObject):
     globalHistory=Param.Unsigned (2,"bits")
    # added
 
-    
-
-    
-   # added   
+      
     BTBEntries = Param.Unsigned(4096, "Number of BTB entries")
     BTBTagSize = Param.Unsigned(16, "Size of the BTB tags, in bits")
 
