@@ -1,0 +1,14 @@
+// statistics for corr_pred
+// for global history length = 2bits
+
+system.cpu.branchPred.lookups                   63999                       # Number of BP lookups
+system.cpu.branchPred.condPredicted             52967                       # Number of conditional branches predicted
+system.cpu.branchPred.condIncorrect              6801                       # Number of conditional branches incorrect
+system.cpu.branchPred.BTBLookups                59711                       # Number of BTB lookups
+system.cpu.branchPred.BTBHits                   46308                       # Number of BTB hits
+system.cpu.branchPred.BTBCorrect                    0                       # Number of correct BTB predictions (this stat may not work properly.
+system.cpu.branchPred.BTBHitPct             77.553550                       # BTB Hit Percentage
+system.cpu.branchPred.usedRAS                    3887                       # Number of times the RAS was used to get a target.
+system.cpu.branchPred.RASInCorrect                 75                       # Number of incorrect RAS predictions.
+system.cpu.branchPred.UpdatePredictor          133695                       # Number of times the predictor counter is updated.
+system.cpu.branchPred.correctpredictionPercent    87.159930                       # correct prediction percentage
