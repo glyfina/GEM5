@@ -49,13 +49,13 @@ BranchPredictorParams::create()
         return new TournamentBP(this);
     } 
       else if (predType == "corr_pred"){
-          return new my_predictorBP(this);
+          return new corr_predBP(this);
      }
       else if (predType == "corr"){
-          return new my_predictorBP(this);
+          return new corrBP(this);
      }
      else if (predType == "gselect"){
-          return new my_predictorBP(this);
+          return new gselectBP(this);
      }
     else {
         fatal("Invalid BP selected!");
