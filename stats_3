@@ -1,0 +1,16 @@
+
+// statistics for corr_pred
+// program: 100x100 array sorting
+// global history length=3
+
+system.cpu.branchPred.lookups                   64715                       # Number of BP lookups
+system.cpu.branchPred.condPredicted             53286                       # Number of conditional branches predicted
+system.cpu.branchPred.condIncorrect              6998                       # Number of conditional branches incorrect
+system.cpu.branchPred.BTBLookups                58238                       # Number of BTB lookups
+system.cpu.branchPred.BTBHits                   44533                       # Number of BTB hits
+system.cpu.branchPred.BTBCorrect                    0                       # Number of correct BTB predictions (this stat may not work properly.
+system.cpu.branchPred.BTBHitPct             76.467255                       # BTB Hit Percentage
+system.cpu.branchPred.usedRAS                    3876                       # Number of times the RAS was used to get a target.
+system.cpu.branchPred.RASInCorrect                 78                       # Number of incorrect RAS predictions.
+system.cpu.branchPred.UpdatePredictor          133764                       # Number of times the predictor counter is updated.
+system.cpu.branchPred.correctpredictionPercent    86.867095                       # correct prediction percentage
