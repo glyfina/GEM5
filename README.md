@@ -5,7 +5,7 @@ Integration of correlator Branch Predictor into gem5 cycle accurate architectura
 
 Add the source files in SConcript
 
-In bpred_unit.cc Add 'return new corr_predBP(this)'
+In bpred_unit.cc create a new object for predictor
 
 Add params to Branchpredictor.py
 
