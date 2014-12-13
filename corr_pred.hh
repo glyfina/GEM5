@@ -49,38 +49,10 @@ private:
 
  void updateGlobalHistNotTaken();
 
-    /** Number of bits for each entry of the local history table. */
-   // unsigned localHistoryBits_corr;
-
-    
-    /** Number of entries in the local history table. */
-    //unsigned localHistoryTableSize_corr;
-/*struct BPHistory {
-#ifdef DEBUG
-        BPHistory()
-        { newCount++; }
-        ~BPHistory()
-        { newCount--; }
-
-        static int newCount;
-#endif
-        unsigned globalHistory;
-        
-        
-    };
-*/
-
-/** Array of local history table entries. */
-//std::vector<SatCounter> localCtrs;
-//  vector < vector<SatCounter>> localHistoryTable;
-// vector < localCtrs> localHistoryTable;
-
 
 int value[16][4];
 
 
-// BPHistory *history; 
-   
 unsigned PredSize;
 unsigned PredCtrs;
 unsigned instShiftAmt;
