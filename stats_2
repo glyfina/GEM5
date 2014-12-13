@@ -1,5 +1,5 @@
 // statistics for corr_pred
-// program 100x100 array sorting
+// program :100x100 array sorting
 // global history length = 2bits
 
 system.cpu.branchPred.lookups                   63999                       # Number of BP lookups
