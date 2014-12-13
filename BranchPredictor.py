@@ -36,7 +36,7 @@ class BranchPredictor(SimObject):
     cxx_header = "cpu/pred/bpred_unit.hh"
 
     numThreads = Param.Unsigned(1, "Number of threads")
-    predType = Param.String("tournament",
+    predType = Param.String("corr_pred",
         "Branch predictor type ('local', 'tournament','corr_pred','corr','gselect')")
     localPredictorSize = Param.Unsigned(2048, "Size of local predictor") 
     localCtrBits = Param.Unsigned(2, "Bits per counter")
