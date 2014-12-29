@@ -22,7 +22,7 @@ sprintf (msg, " constructor called ");
 
    
 
-     for(int i=0;i<32 ;i++){
+     for(int i=0;i<4 ;i++){
          for (int j=0; j<16 ;j++){
         value[i][j]=0;
    }}
@@ -41,7 +41,7 @@ sprintf (msg, " constructor called ");
 
 void corr_predBP:: reset() {
 
-    for(int i=0;i<32;i++){
+    for(int i=0;i<4;i++){
          for (int j=0; j<16 ;j++){
         value[i][j]=0;
    }}
@@ -60,7 +60,7 @@ void
 corr_predBP::updateGlobalHistTaken()
 {
     globalHistory = (globalHistory << 1) | 1;
-    globalHistory = globalHistory & 31;
+    globalHistory = globalHistory & 3;
     DPRINTF(Fetch, "global branch taken\n");
    
 }
@@ -72,7 +72,7 @@ void
 corr_predBP::updateGlobalHistNotTaken()
 {
     globalHistory = (globalHistory << 1);
-    globalHistory = globalHistory & 31;
+    globalHistory = globalHistory & 3;
     DPRINTF(Fetch, "global branch not taken\n");
    
 }
