@@ -7,7 +7,6 @@
 #include "cpu/pred/gselect.hh"
 #include "debug/Fetch.hh"
 
-
 gselectBP::gselectBP(const Params *params ):BPredUnit(params),InstShiftAmt(params->InstShiftAmt)
      
 {
