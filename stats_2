@@ -2,6 +2,7 @@
 // program :100x100 array sorting
 // global history length = 2bits
 
+
 system.cpu.branchPred.lookups                   63999                       # Number of BP lookups
 system.cpu.branchPred.condPredicted             52967                       # Number of conditional branches predicted
 system.cpu.branchPred.condIncorrect              6801                       # Number of conditional branches incorrect
