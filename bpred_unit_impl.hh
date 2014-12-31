@@ -4,7 +4,6 @@
 #define __CPU_PRED_BPRED_UNIT_IMPL_HH__
 
 #include <algorithm>
-
 #include "arch/isa_traits.hh"
 #include "arch/types.hh"
 #include "arch/utility.hh"
