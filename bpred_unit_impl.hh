@@ -1,47 +1,4 @@
 
-/*
- * Copyright (c) 2011-2012 ARM Limited
- * Copyright (c) 2010 The University of Edinburgh
- * Copyright (c) 2012 Mark D. Hill and David A. Wood
- * All rights reserved
- *
- * The license below extends only to copyright in the software and shall
- * not be construed as granting a license to any other intellectual
- * property including but not limited to intellectual property relating
- * to a hardware implementation of the functionality of the software
- * licensed hereunder.  You may use the software subject to the license
- * terms below provided that you ensure that this notice is replicated
- * unmodified and in its entirety in all distributions of the software,
- * modified or unmodified, in source code or in binary form.
- *
- * Copyright (c) 2004-2005 The Regents of The University of Michigan
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met: redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer;
- * redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution;
- * neither the name of the copyright holders nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Authors: Kevin Lim
- */
 
 #ifndef __CPU_PRED_BPRED_UNIT_IMPL_HH__
 #define __CPU_PRED_BPRED_UNIT_IMPL_HH__
@@ -79,7 +36,20 @@ BPredUnit::BPredUnit(const Params *params) : SimObject(params),BTB(params->BTBEn
     BTBhit_count=0;
     update_count=0;
 
-    fl1.openlog();
+    //fl1.openlog();
+
+
+
+
+
+
+   // report.resize(1);
+
+  // sprintf (msg1, "Bpred constructor called \n");
+  
+   //fl1.openlog ();
+  // fl1.log(msg1);
+   
 
 
 }
@@ -144,10 +114,17 @@ BPredUnit::regStats()
        .desc("correct prediction percentage")
        .precision(6);
     correctpredictionPercent = ((condPredicted- condIncorrect)/(condPredicted)) * 100;
+
+    correct_pred
+      .name(name() + ".correct_pred")
+       .desc("correct_pred")
+       .precision(6);
+    correct_pred = ((condPredicted- condIncorrect)/(condPredicted)) * 100;
+
      
   
-   sprintf (msg1, "reg stats called \n");
-  fl1.log(msg1);
+  // sprintf (msg1, "reg stats called \n");
+  //fl1.log(msg1);
 
 }
 
@@ -179,7 +156,7 @@ BPredUnit::predict(StaticInstPtr &inst, const InstSeqNum &seqNum,
 
    lookup_count ++;
   sprintf (msg1," lookup=%d \n ", lookup_count);
-  fl1.log(msg1);
+ // fl1.log(msg1);
 
     void *bp_history = NULL;
 
@@ -193,7 +170,7 @@ BPredUnit::predict(StaticInstPtr &inst, const InstSeqNum &seqNum,
 
          predicted_count++;
         sprintf (msg1," predicted=%d \n ", predicted_count);
-        fl1.log(msg1);
+     //   fl1.log(msg1);
 
         pred_taken = lookup(pc.instAddr(), bp_history);
 
@@ -232,7 +209,7 @@ BPredUnit::predict(StaticInstPtr &inst, const InstSeqNum &seqNum,
 
              BTB_count++;
              sprintf (msg1," BTB_count=%d \n ", BTB_count);
-             fl1.log(msg1);
+          //   fl1.log(msg1);
 
             if (inst->isCall()) {
                 RAS[tid].push(pc);
@@ -252,7 +229,7 @@ BPredUnit::predict(StaticInstPtr &inst, const InstSeqNum &seqNum,
                  
                 BTBhit_count++;
              sprintf (msg1," BTBhit_count=%d \n ", BTBhit_count);
-             fl1.log(msg1);
+            // fl1.log(msg1);
                 
                 // If it's not a return, use the BTB to get the target addr.
                 target = BTB.lookup(pc.instAddr(), tid);
@@ -319,7 +296,7 @@ BPredUnit::predictInOrder(StaticInstPtr &inst, const InstSeqNum &seqNum,
     ++ lookup_count_in;
 
    sprintf (msg1," lookup inorder=%d ", lookup_count_in);
-   fl1.log(msg1);
+ //  fl1.log(msg1);
    // added by me
     // report[0].incr_lookup_inorder();
     //
@@ -345,7 +322,7 @@ BPredUnit::predictInOrder(StaticInstPtr &inst, const InstSeqNum &seqNum,
 
       predicted_count_in++;
              sprintf (msg1," predicted_count_in=%d \n ", predicted_count_in);
-             fl1.log(msg1);
+           //  fl1.log(msg1);
 
         pred_taken = lookup(predPC.instAddr(), bp_history);
     }
@@ -380,7 +357,7 @@ BPredUnit::predictInOrder(StaticInstPtr &inst, const InstSeqNum &seqNum,
             ++BTBLookups;
              BTB_count_in++;
              sprintf (msg1," BTB_count_in=%d \n ", BTB_count_in);
-             fl1.log(msg1);
+            // fl1.log(msg1);
 
             if (inst->isCall()) {
 
@@ -407,7 +384,7 @@ BPredUnit::predictInOrder(StaticInstPtr &inst, const InstSeqNum &seqNum,
 
 
                  sprintf (msg1," BTB hit_in=%d \n ", BTBhit_count_in);
-                 fl1.log(msg1);
+                 //fl1.log(msg1);
 
                 // If it's not a return, use the BTB to get the target addr.
                 target = BTB.lookup(predPC.instAddr(), asid);
@@ -454,7 +431,7 @@ BPredUnit::update(const InstSeqNum &done_sn, ThreadID tid)
 
     update_count++;
    sprintf (msg1," lookup=%d ", update_count);
-   fl1.log(msg1);
+   //fl1.log(msg1);
    
 
     while (!predHist[tid].empty() &&
@@ -508,8 +485,8 @@ BPredUnit::squash(const InstSeqNum &squashed_sn, ThreadID tid)
                 tid, predHist[tid].size());
     }
 
-     sprintf (msg1, "squash2 called\n");
-      fl1.log(msg1);
+   //   sprintf (msg1, "squash2 called\n");
+   // fl1.log(msg1);
 }
 
 void
@@ -534,14 +511,14 @@ BPredUnit::squash(const InstSeqNum &squashed_sn,
    
     mispredict_count++;
     sprintf (msg1," mispredict=%d ", mispredict_count);
-    fl1.log(msg1);
+  //  fl1.log(msg1);
 
     DPRINTF(Branch, "[tid:%i]: Squashing from sequence number %i, "
             "setting target to %s.\n", tid, squashed_sn, corrTarget);
 
     // Squash All Branches AFTER this mispredicted branch
-    squash(squashed_sn, tid);
-
+    
+       squash(squashed_sn, tid);
     // If there's a squash due to a syscall, there may not be an entry
     // corresponding to the squash.  In that case, don't bother trying to
     // fix up the entry.
@@ -550,7 +527,7 @@ BPredUnit::squash(const InstSeqNum &squashed_sn,
         HistoryIt hist_it = pred_hist.begin();
         //HistoryIt hist_it = find(pred_hist.begin(), pred_hist.end(),
         //                       squashed_sn);
-
+        squash2((*hist_it).pc);
         //assert(hist_it != pred_hist.end());
         if (pred_hist.front().seqNum != squashed_sn) {
             DPRINTF(Branch, "Front sn %i != Squash sn %i\n",
@@ -640,17 +617,21 @@ BPredUnit::dump()
         }
     }
 
-     sprintf (msg1, "dump called\n");
-    fl1.log(msg1);
+   //  sprintf (msg1, "dump called\n");
+   // fl1.log(msg1);
      
 }
 
 
 BPredUnit::~BPredUnit(void){
 
-sprintf (msg1, "file closed\n");
-fl1.log(msg1);
-fl1.closelog();
+//report[0].call_print();
+///sprintf (msg1);
+//fl1.log(msg1);
+
+
+
+
 }
 
 #endif//__CPU_PRED_BPRED_UNIT_IMPL_HH__
