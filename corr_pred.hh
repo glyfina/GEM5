@@ -17,7 +17,6 @@ using namespace std;
 
 class corr_predBP : public BPredUnit
 {
-
 public:
 
 corr_predBP(const Params *params );    // constructor
