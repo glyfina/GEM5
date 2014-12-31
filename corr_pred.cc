@@ -10,6 +10,7 @@
 #include "debug/Fetch.hh"
 
 
+
 corr_predBP::corr_predBP(const Params *params ):BPredUnit(params),PredSize(params->PredSize),PredCtrs(params->PredCtrs),globalHistory_size(params->globalHistory_size),InstShiftAmt(params->InstShiftAmt)
      
 {
