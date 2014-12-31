@@ -1,5 +1,6 @@
 
 
+
 #ifndef __CPU_PRED_CORR_PRED_HH__
 #define __CPU_PRED_CORR_PRED_HH__
 
@@ -22,6 +23,8 @@ corrBP(const Params *params );    // constructor
 
 ~corrBP(void);
 
+unsigned calcLocHistIdx(Addr &branch_addr);
+
 void uncondBranch(void * &bp_history,Addr branch_addr);
 
 
@@ -34,7 +37,7 @@ void update(Addr branch_addr, bool taken, void *bp_history, bool squashed); /* u
 
  void squash(void *bp_history);
    
-
+ void squash2(Addr &branch_addr);
 
 void reset();
 
@@ -46,13 +49,26 @@ private:
  void updateGlobalHistTaken(unsigned branch_lower_order);
 
  void updateGlobalHistNotTaken(unsigned branch_lower_order);
+ struct BPHistory {
+#ifdef DEBUG
+        BPHistory()
+        { newCount++; }
+        ~BPHistory()
+        { newCount--; }
 
+        static int newCount;
+#endif
+        unsigned local_pred;
+        unsigned global_pred;
+    };
      
 unsigned historytable[16];
 unsigned countertable[16];
-
-uint8_t index;
-uint8_t count;
+unsigned local_pred;
+unsigned global_pred;
+unsigned InstShiftAmt;
+unsigned index;
+unsigned count;
 unsigned branch_lower_order;
 
 char msg[1000];
