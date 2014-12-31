@@ -13,13 +13,11 @@ corrBP::corrBP(const Params *params ):BPredUnit(params),InstShiftAmt(params->Ins
 {
 
 // initialise history table and counter table
-
  for (int i=0; i<16;i++)
    {
 
     historytable[i]=0;
   } 
-
 
    for (int i=0; i<16;i++)
    {
