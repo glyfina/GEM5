@@ -8,7 +8,7 @@
 #include "debug/Fetch.hh"
 
 
-gselectBP::gselectBP(const Params *params ):BPredUnit(params)
+gselectBP::gselectBP(const Params *params ):BPredUnit(params),InstShiftAmt(params->InstShiftAmt)
      
 {
 
@@ -22,7 +22,13 @@ gselectBP::gselectBP(const Params *params ):BPredUnit(params)
    {
 
     countertable[i]=0;
-  }   
+  }
+
+  
+  global_pred=0;
+  fl.openlog();
+  sprintf (msg , " constructor called ");
+  fl.log(msg);   
    
 }
 
@@ -39,7 +45,12 @@ void gselectBP:: reset() {
 
     countertable[i]=0;
   }
-
+ 
+  
+  global_pred=0;
+  fl.openlog();
+  sprintf (msg , " constructor called ");
+  fl.log(msg);
 
  DPRINTF(Fetch, "reset\n");
  sprintf (msg , " reset called ");
@@ -71,7 +82,13 @@ gselectBP::updateGlobalHistNotTaken()
    
 }
 
-
+inline
+unsigned
+gselectBP::calcLocHistIdx(Addr &branch_addr)
+{
+    // Get low order bits after removing instruction offset.
+    return (branch_addr >> InstShiftAmt) & (15);
+}
 
 // lookup
 
@@ -79,7 +96,7 @@ bool gselectBP:: lookup(Addr branch_addr, void * &bp_history ){
 
 bool taken=0;
 
-branch_lower_order= branch_addr & 255;
+branch_lower_order= calcLocHistIdx(branch_addr);
 index= branch_lower_order ^ globalhistory; // xor
 
 index=index & 255;
@@ -92,12 +109,18 @@ taken= (count >> 1);   // get the msb of the sat count
 
 
 sprintf (msg , " addr= 0x%lu", branch_addr);
-fl.log(msg);
+ fl.log(msg);
 
 
 DPRINTF(Fetch, "branch lower order=%i\n", branch_lower_order);
 DPRINTF(Fetch, "lookup complete\n");
-   
+  
+// Create BPHistory and pass it back to be recorded.
+    BPHistory *history = new BPHistory;
+    history->global_pred = taken;
+    bp_history = (void *)history;
+DPRINTF(Fetch, "branch lower order=%i\n", branch_lower_order);
+DPRINTF(Fetch, "lookup complete\n"); 
 
 return taken;
 }
@@ -109,9 +132,10 @@ void
 gselectBP:: update(Addr branch_addr, bool taken, void *bp_history, bool squashed ){
 
     
-   branch_lower_order = branch_addr & 255;
-   
-  
+   branch_lower_order = calcLocHistIdx(branch_addr);
+      
+if (bp_history) {
+        BPHistory *history = static_cast<BPHistory *>(bp_history); 
    
 
 // update local history
@@ -142,15 +166,17 @@ gselectBP:: update(Addr branch_addr, bool taken, void *bp_history, bool squashed
         count--;
         countertable[index]=count;
 
-              
-
-       
+                
         updateGlobalHistNotTaken();
         DPRINTF(Fetch, "global update.\n");
    }
 
+//pass it back to be recorded
+    history->global_pred = taken;
+    
+    bp_history = static_cast<void *>(history);
 
-
+}
 
 sprintf (msg , " addr= 0x%lu", branch_addr);
  fl.log(msg);
@@ -164,17 +190,37 @@ DPRINTF(Fetch, "update complete\n");
 void
 gselectBP::btbUpdate(Addr branch_addr, void * &bp_history)
 {
+
 // Place holder for a function that is called to update predictor history when
 // a BTB entry is invalid or not found.
-        //  updateGlobalHistNotTaken();
 
+branch_lower_order = calcLocHistIdx(branch_addr);
 
+// get the stored predictor history
+  BPHistory *history = static_cast<BPHistory *>(bp_history);
+      
+// update History to not taken
+   
+   index= branch_lower_order ^ globalhistory;
+         index=index & 255;
+         count=countertable[index];  
+       
+        if ((count>0) & (count<=3))
+        count--;
+        countertable[index]=count;
+         
+        updateGlobalHistNotTaken();
+
+ //pass it back to be recorded
+    history->global_pred = 0;
     
+    bp_history = static_cast<void *>(history);
 
+  
 DPRINTF(Fetch, "btbUpdate\n");
 
 sprintf (msg , " addr= 0x%lu", branch_addr);
- fl.log(msg);
+fl.log(msg);
 
 
 }
@@ -183,14 +229,27 @@ sprintf (msg , " addr= 0x%lu", branch_addr);
 void
 gselectBP::uncondBranch(void *&bp_history,Addr branch_addr)
 {
-
+  // Create BPHistory and pass it back to be recorded.
+    BPHistory *history = new BPHistory;
+    history->global_pred= 1;
+    bp_history = static_cast<void *>(history);
   
-  DPRINTF(Fetch, "uncondBranch\n");
+    DPRINTF(Fetch, "uncondBranch\n");
+    branch_lower_order = calcLocHistIdx(branch_addr);
+  
+    index= branch_lower_order ^ globalhistory;
+        index=index & 255;
+        count=countertable[index];
+        if ((count>=0) & (count<3))
+        count++;
+        countertable[index]=count;
+   
+   DPRINTF(Fetch, "uncondBranch\n");
     updateGlobalHistTaken();
 
 
   sprintf (msg , " uncond branch called ");
-    fl.log(msg);
+  fl.log(msg);
 
 }
 
@@ -200,38 +259,42 @@ void
 gselectBP::squash(void *bp_history){
 
 DPRINTF(Fetch, "squash\n");
-  
+  //  updateGlobalHistNotTaken();
 
-  assert(bp_history == NULL);
-
+  updateGlobalHistNotTaken();
   sprintf(msg,"squash called ");
-   fl.log(msg);
+  // fl.log(msg);
+
+}
+
+
+void
+gselectBP::squash2(Addr &branch_addr){
+ 
+  
+     branch_lower_order = calcLocHistIdx(branch_addr);
+     // decrement counters since branch was mispredicted  
+       
+     index= branch_lower_order ^ globalhistory;
+         index=index & 255;
+         count=countertable[index];  
+       
+        if ((count>0) & (count<=3))
+        count--;
+        countertable[index]=count;
+
+                  
+
 
 }
 
 gselectBP:: ~ gselectBP (void){
 
 
-sprintf (msg , " update_count=%d ",update_count);
-
-fl.log(msg);
-fl.closelog();
-
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#ifdef DEBUG
+int
+gselectBP::BPHistory::newCount = 0;
+#endif
 
