@@ -21,6 +21,8 @@ gselectBP(const Params *params );    // constructor
 
 ~gselectBP(void);
 
+unsigned calcLocHistIdx(Addr &branch_addr);
+
 void uncondBranch(void * &bp_history,Addr branch_addr);
 
 
@@ -32,7 +34,7 @@ void update(Addr branch_addr, bool taken, void *bp_history, bool squashed); /* u
 
 
  void squash(void *bp_history);
-   
+ void squash2(Addr &branch_addr);  
 
 
 void reset();
@@ -40,8 +42,21 @@ void reset();
 
 
 private:
+struct BPHistory {
+#ifdef DEBUG
+        BPHistory()
+        { newCount++; }
+        ~BPHistory()
+        { newCount--; }
 
+        static int newCount;
+#endif
+        unsigned local_pred;
+        unsigned global_pred;
+    };
 
+unsigned global_pred;
+unsigned InstShiftAmt;
  void updateGlobalHistTaken();
 
  void updateGlobalHistNotTaken();
