@@ -15,6 +15,7 @@
 #include "sim/sim_object.hh"
 #include "cpu/pred/file.hh"
 
+
 /**
  * Basically a wrapper class to hold both the branch predictor
  * and the BTB.
@@ -22,6 +23,7 @@
 class BPredUnit : public SimObject
 {
   public:
+  
       typedef BranchPredictorParams Params;
     /**
      * @param params The params object, that has the size of the BP and BTB.
