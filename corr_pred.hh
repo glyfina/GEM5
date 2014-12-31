@@ -33,10 +33,11 @@ void btbUpdate(Addr branch_addr, void * &bp_history);
 
 void update(Addr branch_addr, bool taken, void *bp_history, bool squashed); /* updates the branch address as taken , not taken or squashed in the bp_history table*/
 
+unsigned calcLocHistIdx(Addr &branch_addr);
 
  void squash(void *bp_history);
    
-
+ void squash2(Addr &branch_addr);
 
 void reset();
 
@@ -45,29 +46,41 @@ void reset();
 private:
 
 
+
+unsigned branch_lower_order;
+
  void updateGlobalHistTaken();
 
  void updateGlobalHistNotTaken();
 
+   struct BPHistory {
+#ifdef DEBUG
+        BPHistory()
+        { newCount++; }
+        ~BPHistory()
+        { newCount--; }
 
-int value[16][4];
+        static int newCount;
+#endif
+        unsigned local_pred;
+        unsigned global_pred;
+    };
 
-
+unsigned value[4][16];
+unsigned local_pred;
+unsigned global_pred;
 unsigned PredSize;
 unsigned PredCtrs;
 unsigned instShiftAmt;
+unsigned globalHistory_size;
 unsigned globalHistory;
-unsigned flag;  
-
-uint8_t c;
+unsigned globalHistory_value;
 unsigned localPredictorSets;
-
-uint8_t count;
-unsigned branch_lower_order;
-
-char msg[1000];
+unsigned count;
+unsigned InstShiftAmt;
 
 file fl;
+
 };
 
 #endif // __CPU_PRED_corr_pred_PRED_HH__
